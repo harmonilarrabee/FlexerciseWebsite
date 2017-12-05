@@ -1,0 +1,141 @@
+<html>
+
+<head>
+	<title>Pumpkin Pie Recipe</title>
+	<script src="https://unpkg.com/vue"></script>
+	<style>
+		.heading {
+			font-family: verdana;
+			background-color: saddlebrown;
+			color: wheat;
+			text-align: center;
+			padding: 1px;
+		}
+		.recipe-wrapper {
+			display: inline-flex;
+		}
+		.recipe, .ingredients {
+        	margin: 5px;
+ 	      	border: 5px solid saddlebrown;
+	     	border-radius: 5px;
+		}
+		.ingredients {
+			background-color: saddlebrown;
+			flex: 1;
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.ingredients div {
+			font-family: verdana;
+			background-color: burlywood;
+			flex-grow: 1;
+			flex-shrink: 0;
+			margin: 5px;
+    		display: flex;
+    		flex-direction: column;
+    		justify-content: center;
+    		align-items: center;
+		}
+		.recipe {
+			background-color: khaki;
+			counter-reset: section;
+			flex: 2;
+		}
+		.recipe div {
+			font-family: verdana;
+			margin: 5px;
+		}
+		.recipe div:nth-child(even) {
+			background-color: lightgoldenrodyellow;
+		}
+		.recipe div::before {
+			counter-increment: section;
+			content: counter(section) ".";
+			padding-right: 2px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id = "app">
+		<div class=heading>
+			<h1>{{ recipe.title }}</h1>
+		</div>
+
+		<div class=recipe-wrapper>
+			<div class="ingredients">
+				<div class=ingredient v-for="ingredient in recipe.ingredients">{{ ingredient }}</div>
+			</div>
+
+			<div class="recipe">
+				<div class=recipe-step v-for="step in recipe.steps">{{ step }}</div>
+			</div>
+		</div>
+
+		<div>
+			<button @click="switchRecipe()">Switch</button>
+		</div>
+	</div>
+
+	<script>
+		var recipies = [
+			{
+				title: "Pumpkin Pie",
+				ingredients: [ 
+					"1 can pumpkin puree",
+					"1 can sweetened condensed milk",
+					"2 large eggs",
+					"1 tsp vanilla",
+					"1/2 cup sugar",
+					"1 tsp cinnamon",
+					"1/2 tsp salt",
+					"1/4 tsp nutmeg",
+					"1/4 tsp clove",
+					"1 tbsp bourbon",
+				],
+				steps: [
+					"Preheat oven to 375 degrees.",
+					"While oven is preheating, melt the butter in a saucepan over medium-high heat.",
+					"Add clove, nutmeg, cinnamon, and any other desired spices to the butter for one minute or until spices become aromatic.",
+					"Reduce heat to low and add pumpkin puree and bourbon to the saucepan. Stir as mixture cools.",
+					"Add condensed milk to saucepan. Stir until mixture is a smooth pastel orange. Remove from heat.",
+					"While mixture cools, heat the eggs in a separate bowl.",
+					"Fold eggs into mixture.",
+					"Pour mixture into pie shell and bake for 30-45 minutes, or until top of pie begins to puff slightly.",
+				],
+			},
+			{
+				title: "Hard-Boiled Eggs",
+				ingredients: [ "6 large eggs." ],
+				steps: [
+					"Put eggs in saucepan.",
+					"Fill saucepan with water until eggs are covered.",
+					"Bring water to a boil.",
+					"Remove pot from heat and allow to cool.",
+				],
+			},
+		];
+
+		var recipeIndex = 0;
+		recipe = recipes[0];
+
+		var app = new Vue({
+			el: '#app',
+			data: {
+				title: recipe.title,
+				ingredients: recipe.ingredients,
+				steps:recipe.steps,
+			},
+			methods: {
+				switchRecipe: function() {
+					recipeIndex++;
+					recipeIndex = recipeIndex % recipes.length;
+					recipe = recipes[recipeIndex];
+					this.title = recipe.title;
+					this.steps = recipe.steps;
+					this.ingredients = recipe.ingredients;
+				}
+			}
+		});
+	</script>
+</body>
